@@ -58,14 +58,8 @@ LDFLAGS         += -L$(LibLocation) -l$(LibName) $(RPATH)$(LibLocation)
 else # static
 LDFLAGS         += $(LibLocation)/lib$(LibName).a
 endif
-
 ################################################################
 
-test:
-	# HEADERS = $(HEADERS)
-	# SOURCES = $(SOURCES)
-	# OBJ = $(OBJ)
-	# LIB = $(LIB)
 
 ### Just build "full" and install
 .PHONY: f
@@ -92,7 +86,6 @@ $(build_dir)/lib$(LIB).a: $(LIB_OBJ)
 	ar rc $(build_dir)/lib$(LIB).a $(LIB_OBJ)
 	######## Done ##############################################
 #   ranlib $(build_dir)/lib$(LIB).a
-
 
 ### Install #####################################################
 INSTALL          = $(GNU)install -m644 -D
