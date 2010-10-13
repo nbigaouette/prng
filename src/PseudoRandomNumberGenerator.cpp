@@ -4,12 +4,10 @@
 #include <cassert>
 #include <cmath>
 
-// #include <Memory.hpp>
+#include <StdCout.hpp>
 
 #include "PseudoRandomNumberGenerator.hpp"
-// #include "General.hpp"
-
-#include <StdCout.hpp>
+#include "Memory.hpp"
 
 #ifdef RAND_DSFMT
 #include "dSFMT/dSFMT.hpp"

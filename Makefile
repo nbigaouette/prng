@@ -26,6 +26,16 @@ include makefiles/Makefile.rules
 
 LIB_OBJ          = $(OBJ)
 
+### Select which random number generator. #####################
+### If RAND_DSFMT is not defined, use C/C++ standard (crappy) rand()
+# Use dSFMT's (http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/)
+CFLAGS      += -DRAND_DSFMT
+## dSFMT flags
+# Default period: (2^DSFMT_MEXP) - 1
+CFLAGS      += -DDSFMT_MEXP=19937
+#CFLAGS      += -DHAVE_SSE2
+###############################################################
+
 ################################################################
 ### StdCout library default location (home directory)
 LibName         := stdcout
@@ -124,7 +134,8 @@ endif
 
 HEADERS_NOTESTING=$(filter-out $(wildcard testing/*.$(HEADEXT)), $(HEADERS) )
 HEADERS_NOTESTING_NOSRC=$(subst src/,,$(HEADERS_NOTESTING) )
-INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC) )
+HEADERS_NOTESTING_NOSRC_NOMEM=$(filter-out Memory.hpp, $(HEADERS_NOTESTING_NOSRC))
+INSTALLED_HEADERS=$(addprefix $(DESTDIR)/include/, $(HEADERS_NOTESTING_NOSRC_NOMEM))
 ###############################################################
 
 
@@ -177,6 +188,12 @@ install_create_folders:
 ifneq (,$(filter $(host), $(HPCVL_MACHINES) ))
 	$(SUDO) mkdir -p $(DESTDIR_LIB)
 endif
+
+test:
+	# INSTALLED_HEADERS = $(INSTALLED_HEADERS)
+	# HEADERS_NOTESTING_NOSRC = $(HEADERS_NOTESTING_NOSRC)
+	# (HEADERS) = $(HEADERS)
+	# INSTALLED_HEADERS= $(INSTALLED_HEADERS)
 
 .PHONY: uninstall
 uninstall: force
