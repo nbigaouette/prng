@@ -201,6 +201,6 @@ uninstall: force
 	######## Removing library from $(DESTDIR_LIB)... ###
 	$(SUDO) $(RM) $(DESTDIR_LIB)/lib$(LIB)*
 	######## Removing library headers from $(DESTDIR_INC)... ###
-	$(SUDO) $(RM) -r $(DESTDIR_INC)
+	$(SUDO) $(RM) -r $(INSTALLED_HEADERS)
 
 ############ End of file ########################################
