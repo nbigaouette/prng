@@ -5,9 +5,9 @@
 #include <cmath>
 
 #include <StdCout.hpp>
+#include <Memory.hpp>
 
 #include "PseudoRandomNumberGenerator.hpp"
-#include "Memory.hpp"
 
 #ifdef RAND_DSFMT
 #include "dSFMT/dSFMT.hpp"
