@@ -3,6 +3,7 @@
 #include <cfloat> // DBL_EPSILON
 #include <cassert>
 #include <cmath>
+#include <sys/time.h> // gettimeofday()
 
 #include <StdCout.hpp>
 #include <Memory.hpp>
@@ -202,6 +203,36 @@ double PRNG::Get_Random_Box_Muller_Polar(const double mean, const double std_dev
         available = false;
         return gset;
     }
+}
+
+// **************************************************************
+void PRNG::Initialize_Taking_Time_As_Seed()
+{
+    // Get high precision time
+    timeval tv;
+    gettimeofday(&tv, 0);
+    // typeof(tv.tv_sec)  = time_t (8 bytes unsigned integer)
+    // typeof(tv.tv_suec) = suseconds_t (8 bytes unsigned integer)
+    // typeof(getpid())   = pid_t (4 bytes unsigned integer)
+    uint64_t seconds_since_epoch        = uint64_t(tv.tv_sec);
+    uint64_t microseconds_since_seconds = uint64_t(tv.tv_usec);
+    uint64_t pid                        = uint64_t(getpid());
+
+    // Set epoch to 2000 instead of 1970. Should give a bigger seed range
+    const uint64_t new_epoch_2000                   = uint64_t(60)*uint64_t(60)
+                                                        *uint64_t(24)*uint64_t(365)
+                                                        *uint64_t(30); // ~30 years
+    const uint64_t seconds_since_new_epoch          = seconds_since_epoch - new_epoch_2000;
+
+    // Get number of microseconds since the new epoch
+    const uint64_t microseconds_since_new_epoch = (uint64_t(1e6) * seconds_since_new_epoch)
+                                                    + microseconds_since_seconds;
+
+    // Multiply by pid to get the seed
+    const uint32_t MAX_uint32_t = ~uint32_t(0);
+    uint32_t random_number_seed = uint32_t((pid * microseconds_since_new_epoch) % uint64_t(MAX_uint32_t));
+
+    Initialize(random_number_seed);
 }
 
 // **************************************************************
