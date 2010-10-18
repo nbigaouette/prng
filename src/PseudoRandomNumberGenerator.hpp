@@ -6,9 +6,9 @@
 
 // **************************************************************
 // Pseudo-Random Number Generator's (PRNG)
-const int Lib_PRNG_TYPE_CPP   = 0;
-const int Lib_PRNG_TYPE_DSFMT = 1;
-class Lib_PRNG
+const int PRNG_TYPE_CPP   = 0;
+const int PRNG_TYPE_DSFMT = 1;
+class PRNG
 {
     int type;
     int is_initialized;
@@ -34,7 +34,7 @@ class Lib_PRNG
         double      Call_N_Time_Get_Random(const int n);
         uint32_t    Get_Seed()      { return seed;     }
         int         Get_Nb_Calls()  { return nb_calls; }
-                    ~Lib_PRNG()     { free(dsfmt_data); }
+                    ~PRNG()         { free(dsfmt_data); }
 };
 
 #endif // INC_PRNG_hpp

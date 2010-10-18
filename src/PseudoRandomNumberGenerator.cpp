@@ -14,23 +14,23 @@
 #endif // #ifdef RAND_DSFMT
 
 // Special code since "is_initialized" might initially be undefined
-const int Lib_PRNG_is_initialized = 12345;
+const int PRNG_is_initialized = 12345;
 
 
 // **************************************************************
-double Lib_PRNG::Get_Random()
+double PRNG::Get_Random()
 /**
  * Return a pseudo-random number in the interval ]0,1]
  * (excluding 0, including 1)
  */
 {
-    assert(is_initialized == Lib_PRNG_is_initialized);
+    assert(is_initialized == PRNG_is_initialized);
 
     return Get_Random_Open0_Close1();
 }
 
 // **************************************************************
-double Lib_PRNG::Get_Random_Close1_Open2()
+double PRNG::Get_Random_Close1_Open2()
 /**
  * Return a pseudo-random number in the interval [1,2[
  * (including 1, excluding 2).
@@ -53,7 +53,7 @@ double Lib_PRNG::Get_Random_Close1_Open2()
 }
 
 // **************************************************************
-double Lib_PRNG::Get_Random_Close0_Open1()
+double PRNG::Get_Random_Close0_Open1()
 /**
  * Return a pseudo-random number in the interval [0,1[
  * (including 0, excluding 1)
@@ -64,7 +64,7 @@ double Lib_PRNG::Get_Random_Close0_Open1()
 }
 
 // **************************************************************
-double Lib_PRNG::Get_Random_Open0_Close1()
+double PRNG::Get_Random_Open0_Close1()
 /**
  * Return a pseudo-random number in the interval ]0,1]
  * (excluding 0, including 1)
@@ -75,7 +75,7 @@ double Lib_PRNG::Get_Random_Open0_Close1()
 }
 
 // **************************************************************
-double Lib_PRNG::Get_Random_CloseN1_Open1()
+double PRNG::Get_Random_CloseN1_Open1()
 /**
  * Return a pseudo-random number in the interval [-1,1[
  * (including -1, excluding 1)
@@ -86,7 +86,7 @@ double Lib_PRNG::Get_Random_CloseN1_Open1()
 }
 
 // **************************************************************
-double Lib_PRNG::Get_Random_Close0_Close1()
+double PRNG::Get_Random_Close0_Close1()
 /**
  * Return a pseudo-random number in the interval [0,1]
  * (including 0, including 1)
@@ -102,7 +102,7 @@ double Lib_PRNG::Get_Random_Close0_Close1()
 }
 
 // **************************************************************
-double Lib_PRNG::Get_Random_CloseN1_Close1()
+double PRNG::Get_Random_CloseN1_Close1()
 /**
  * Return a pseudo-random number in the interval [-1,1]
  * (including -1, including 1)
@@ -113,7 +113,7 @@ double Lib_PRNG::Get_Random_CloseN1_Close1()
 }
 
 // **************************************************************
-void Lib_PRNG::Get_Random_Direction(double xyz[3])
+void PRNG::Get_Random_Direction(double xyz[3])
 /**
  * Marsaglia (3D) to uniformly generate directions in three dimension.
  * Reference:
@@ -146,7 +146,7 @@ void Lib_PRNG::Get_Random_Direction(double xyz[3])
 }
 
 // **************************************************************
-double Lib_PRNG::gasdev()
+double PRNG::gasdev()
 /**
  * Returns a normally distributed deviate with zero mean and unit variance.
  * Same as gasdev() from "Numerical Recipes in C", Chapter 7.2, page 289
@@ -157,7 +157,7 @@ double Lib_PRNG::gasdev()
 }
 
 // **************************************************************
-double Lib_PRNG::Get_Random_Box_Muller_Polar(const double mean, const double std_dev)
+double PRNG::Get_Random_Box_Muller_Polar(const double mean, const double std_dev)
 /**
  * Marsaglia's Polar version of Box-Muller to get randoms
  * numbers from a standard normally distribution.
@@ -205,19 +205,19 @@ double Lib_PRNG::Get_Random_Box_Muller_Polar(const double mean, const double std
 }
 
 // **************************************************************
-void Lib_PRNG::Initialize(const uint32_t new_seed)
+void PRNG::Initialize(const uint32_t new_seed)
 {
     dsfmt_data = NULL;
 #ifdef RAND_DSFMT
     dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t),
-                                  "Lib_PRNG::Initialize()");
+                                  "PRNG::Initialize()");
 #endif // #ifdef RAND_DSFMT
 
     seed           = new_seed;
-    is_initialized = Lib_PRNG_is_initialized;
+    is_initialized = PRNG_is_initialized;
     nb_calls       = 0;
 #ifdef RAND_DSFMT
-    type           = Lib_PRNG_TYPE_DSFMT;
+    type           = PRNG_TYPE_DSFMT;
 
     std_cout
         << "Using SIMD-oriented Fast Mersenne Twister (SFMT)\n"
@@ -234,7 +234,7 @@ void Lib_PRNG::Initialize(const uint32_t new_seed)
         << "pseudo-random number generator.\n"
         << "Enter to continue, Ctrl+C to cancel\n";
 
-    type = Lib_PRNG_TYPE_CPP;
+    type = PRNG_TYPE_CPP;
     getchar();
     srand(seed);
 #endif // #ifdef RAND_DSFMT
@@ -242,7 +242,7 @@ void Lib_PRNG::Initialize(const uint32_t new_seed)
 }
 
 // **************************************************************
-double Lib_PRNG::Call_N_Time_Get_Random(const int n)
+double PRNG::Call_N_Time_Get_Random(const int n)
 {
     volatile double last_rand;
     for (int i = 0 ; i < n ; i++)
