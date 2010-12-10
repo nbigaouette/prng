@@ -124,6 +124,7 @@ void PRNG::Get_Random_Direction(double xyz[3])
  * See Section 3.2 - "Other distributions", page 67.
  * Online:
  * http://books.google.ca/books?id=_uvEBDtaZvQC&pg=PA67&lpg=PA67&dq=Marsaglia+3d&source=bl&ots=37GTsqWEf-&sig=pRmwuWN4-i0SJkIEX9TMezM8syQ&hl=en&ei=lgxaTOLyNYuesQP3v4HwDw&sa=X&oi=book_result&ct=result&resnum=2&ved=0CBkQ6AEwAQ#v=onepage&q=Marsaglia%203d&f=false
+ * http://mathworld.wolfram.com/SpherePointPicking.html
  */
 {
     double y1, y2, r2;
