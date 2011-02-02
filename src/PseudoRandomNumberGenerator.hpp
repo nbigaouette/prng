@@ -20,8 +20,8 @@ class PRNG
     uint32_t seed;
 
     public:
-        void        Initialize_Taking_Time_As_Seed();
-        void        Initialize(const uint32_t seed);
+        void        Initialize_Taking_Time_As_Seed(const bool quiet = false);
+        void        Initialize(const uint32_t seed, const bool quiet = false);
         double      Get_Random();                   // Returns ]0,1]
         double      Get_Random_Close1_Open2();      // [1,2[ Most fundamental, others are based on it
         double      Get_Random_Close0_Open1();      // [0,1[

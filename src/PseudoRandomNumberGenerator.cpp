@@ -207,7 +207,7 @@ double PRNG::Get_Random_Box_Muller_Polar(const double mean, const double std_dev
 }
 
 // **************************************************************
-void PRNG::Initialize_Taking_Time_As_Seed()
+void PRNG::Initialize_Taking_Time_As_Seed(const bool quiet)
 {
     // Get high precision time
     timeval tv;
@@ -237,7 +237,7 @@ void PRNG::Initialize_Taking_Time_As_Seed()
 }
 
 // **************************************************************
-void PRNG::Initialize(const uint32_t new_seed)
+void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
 {
     dsfmt_data = NULL;
 #ifdef RAND_DSFMT
@@ -251,10 +251,13 @@ void PRNG::Initialize(const uint32_t new_seed)
 #ifdef RAND_DSFMT
     type           = PRNG_TYPE_DSFMT;
 
-    std_cout
-        << "Using SIMD-oriented Fast Mersenne Twister (SFMT)\n"
-        << "pseudo-random number generator (PRNG)\n"
-        << "See http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/#dSFMT\n";
+    if (!quiet)
+    {
+        std_cout
+            << "Using SIMD-oriented Fast Mersenne Twister (SFMT)\n"
+            << "pseudo-random number generator (PRNG)\n"
+            << "See http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/#dSFMT\n";
+    }
 
     dsfmt_init_gen_rand((dsfmt_t *) dsfmt_data, new_seed);
 #else  // #ifdef RAND_DSFMT
@@ -270,7 +273,10 @@ void PRNG::Initialize(const uint32_t new_seed)
     getchar();
     srand(seed);
 #endif // #ifdef RAND_DSFMT
-    std_cout << "Library's PRNG's seed: " << seed << std::endl;
+    if (!quiet)
+    {
+        std_cout << "Library's PRNG's seed: " << seed << std::endl;
+    }
 }
 
 // **************************************************************
