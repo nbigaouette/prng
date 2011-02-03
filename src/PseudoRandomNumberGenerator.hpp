@@ -17,6 +17,7 @@ class PRNG
     uint32_t seed;
 
     public:
+                    ~PRNG();
         void        Initialize_Taking_Time_As_Seed(const bool quiet = false);
         void        Initialize(const uint32_t seed, const bool quiet = false);
         double      Get_Random();                   // Returns ]0,1]
@@ -32,7 +33,6 @@ class PRNG
         double      Call_N_Time_Get_Random(const int n);
         uint32_t    Get_Seed()      { return seed;     }
         int         Get_Nb_Calls()  { return nb_calls; }
-                    ~PRNG()         { free(dsfmt_data); }
 };
 
 #endif // INC_PRNG_hpp

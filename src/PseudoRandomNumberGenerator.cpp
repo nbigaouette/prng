@@ -16,7 +16,11 @@
 
 // Special code since "is_initialized" might initially be undefined
 const int PRNG_is_initialized = 12345;
-
+// **************************************************************
+PRNG::~PRNG()
+{
+    free_me(dsfmt_data, 1);
+}
 
 // **************************************************************
 double PRNG::Get_Random()
