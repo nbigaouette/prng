@@ -49,6 +49,9 @@ double PRNG::Get_Random()
  */
 {
     assert(is_initialized == PRNG_is_initialized);
+#ifdef RAND_DSFMT
+    assert(dsfmt_data != NULL);
+#endif // #ifdef RAND_DSFMT
 
     return Get_Random_Open0_Close1();
 }
