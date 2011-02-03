@@ -10,12 +10,21 @@
 
 #include "PseudoRandomNumberGenerator.hpp"
 
-#ifdef RAND_DSFMT
-#include "dSFMT/dSFMT.hpp"
-#endif // #ifdef RAND_DSFMT
-
 // Special code since "is_initialized" might initially be undefined
-const int PRNG_is_initialized = 12345;
+const int PRNG_is_initialized       = 12345;
+const int PRNG_is_NOT_initialized   = 0;
+
+
+// **************************************************************
+PRNG::PRNG()
+{
+    is_initialized = PRNG_is_NOT_initialized;
+    nb_calls = 0;
+#ifdef RAND_DSFMT
+    dsfmt_data = NULL;
+#endif // #ifdef RAND_DSFMT
+}
+
 // **************************************************************
 PRNG::~PRNG()
 {

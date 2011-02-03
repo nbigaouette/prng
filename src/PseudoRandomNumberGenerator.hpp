@@ -17,6 +17,7 @@ class PRNG
     uint32_t seed;
 
     public:
+                     PRNG();
                     ~PRNG();
         void        Initialize_Taking_Time_As_Seed(const bool quiet = false);
         void        Initialize(const uint32_t seed, const bool quiet = false);
