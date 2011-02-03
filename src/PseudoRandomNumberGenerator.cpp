@@ -252,10 +252,8 @@ void PRNG::Initialize_Taking_Time_As_Seed(const bool quiet)
 // **************************************************************
 void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
 {
-    dsfmt_data = NULL;
 #ifdef RAND_DSFMT
-    dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t),
-                                  "PRNG::Initialize()");
+    dsfmt_data = (dsfmt_t *) calloc_and_check(1, sizeof(dsfmt_t), "PRNG::Initialize()");
 #endif // #ifdef RAND_DSFMT
 
     seed           = new_seed;
@@ -270,7 +268,7 @@ void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
             << "See http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/#dSFMT\n";
     }
 
-    dsfmt_init_gen_rand((dsfmt_t *) dsfmt_data, new_seed);
+    dsfmt_init_gen_rand(dsfmt_data, new_seed);
 #else  // #ifdef RAND_DSFMT
 
     std_cout
