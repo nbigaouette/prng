@@ -6,11 +6,8 @@
 
 // **************************************************************
 // Pseudo-Random Number Generator's (PRNG)
-const int PRNG_TYPE_CPP   = 0;
-const int PRNG_TYPE_DSFMT = 1;
 class PRNG
 {
-    int type;
     int is_initialized;
     int nb_calls;
 

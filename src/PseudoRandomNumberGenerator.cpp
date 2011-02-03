@@ -249,8 +249,6 @@ void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
     is_initialized = PRNG_is_initialized;
     nb_calls       = 0;
 #ifdef RAND_DSFMT
-    type           = PRNG_TYPE_DSFMT;
-
     if (!quiet)
     {
         std_cout
@@ -269,7 +267,6 @@ void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
         << "pseudo-random number generator.\n"
         << "Enter to continue, Ctrl+C to cancel\n";
 
-    type = PRNG_TYPE_CPP;
     getchar();
     srand(seed);
 #endif // #ifdef RAND_DSFMT
