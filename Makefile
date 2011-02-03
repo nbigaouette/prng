@@ -21,6 +21,12 @@ LANGUAGE         = CPP
 # Include the generic rules
 include makefiles/Makefile.rules
 
+.PHONY: validation
+$(BIN): validation
+validation: static
+	$(MAKE) -C validation $(filter-out validation, $(MAKECMDGOALS) )
+	ln -sf validation/$(LIB)_validation .
+
 #################################################################
 # Project specific options
 
