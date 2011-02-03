@@ -4,11 +4,6 @@
 #include <stdint.h> // (u)int64_t
 #include <cstdlib> // free()
 
-
-#ifdef RAND_DSFMT
-#include "dSFMT/dSFMT.hpp"
-#endif // #ifdef RAND_DSFMT
-
 // **************************************************************
 // Pseudo-Random Number Generator's (PRNG)
 class PRNG
@@ -17,7 +12,7 @@ class PRNG
     int nb_calls;
 
 #ifdef RAND_DSFMT
-    dsfmt_t *dsfmt_data;
+    void *dsfmt_data;
 #endif // #ifdef RAND_DSFMT
 
     uint32_t seed;
