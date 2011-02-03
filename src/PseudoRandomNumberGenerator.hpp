@@ -6,20 +6,20 @@
 
 // **************************************************************
 // Pseudo-Random Number Generator's (PRNG)
-const int PRNG_TYPE_CPP   = 0;
-const int PRNG_TYPE_DSFMT = 1;
 class PRNG
 {
-    int type;
     int is_initialized;
     int nb_calls;
 
-    // Use void pointers to prevent poluting main code with dSFMT
+#ifdef RAND_DSFMT
     void *dsfmt_data;
+#endif // #ifdef RAND_DSFMT
 
     uint32_t seed;
 
     public:
+                     PRNG();
+                    ~PRNG();
         void        Initialize_Taking_Time_As_Seed(const bool quiet = false);
         void        Initialize(const uint32_t seed, const bool quiet = false);
         double      Get_Random();                   // Returns ]0,1]
@@ -35,7 +35,6 @@ class PRNG
         double      Call_N_Time_Get_Random(const int n);
         uint32_t    Get_Seed()      { return seed;     }
         int         Get_Nb_Calls()  { return nb_calls; }
-                    ~PRNG()         { free(dsfmt_data); }
 };
 
 #endif // INC_PRNG_hpp

@@ -8,15 +8,38 @@
 #include <StdCout.hpp>
 #include <Memory.hpp>
 
-#include "PseudoRandomNumberGenerator.hpp"
 
 #ifdef RAND_DSFMT
 #include "dSFMT/dSFMT.hpp"
 #endif // #ifdef RAND_DSFMT
 
-// Special code since "is_initialized" might initially be undefined
-const int PRNG_is_initialized = 12345;
 
+#include "PseudoRandomNumberGenerator.hpp"
+
+// Special code since "is_initialized" might initially be undefined
+const int PRNG_is_initialized       = 12345;
+const int PRNG_is_NOT_initialized   = 0;
+
+
+// **************************************************************
+PRNG::PRNG()
+{
+    is_initialized = PRNG_is_NOT_initialized;
+    nb_calls = 0;
+#ifdef RAND_DSFMT
+    dsfmt_data = NULL;
+#endif // #ifdef RAND_DSFMT
+}
+
+// **************************************************************
+PRNG::~PRNG()
+{
+#ifdef RAND_DSFMT
+    dsfmt_t *tmp_pointer = (dsfmt_t *) dsfmt_data;
+    free_me(tmp_pointer, 1);
+    dsfmt_data = NULL;
+#endif // #ifdef RAND_DSFMT
+}
 
 // **************************************************************
 double PRNG::Get_Random()
@@ -26,6 +49,9 @@ double PRNG::Get_Random()
  */
 {
     assert(is_initialized == PRNG_is_initialized);
+#ifdef RAND_DSFMT
+    assert(dsfmt_data != NULL);
+#endif // #ifdef RAND_DSFMT
 
     return Get_Random_Open0_Close1();
 }
@@ -239,18 +265,14 @@ void PRNG::Initialize_Taking_Time_As_Seed(const bool quiet)
 // **************************************************************
 void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
 {
-    dsfmt_data = NULL;
 #ifdef RAND_DSFMT
-    dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t),
-                                  "PRNG::Initialize()");
+    dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t), "PRNG::Initialize()");
 #endif // #ifdef RAND_DSFMT
 
     seed           = new_seed;
     is_initialized = PRNG_is_initialized;
     nb_calls       = 0;
 #ifdef RAND_DSFMT
-    type           = PRNG_TYPE_DSFMT;
-
     if (!quiet)
     {
         std_cout
@@ -269,7 +291,6 @@ void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
         << "pseudo-random number generator.\n"
         << "Enter to continue, Ctrl+C to cancel\n";
 
-    type = PRNG_TYPE_CPP;
     getchar();
     srand(seed);
 #endif // #ifdef RAND_DSFMT
