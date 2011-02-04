@@ -142,7 +142,11 @@ else
         ifneq ($$(wildcard $$($(1)_include_usr)/$(2)),)
             $(1)_Include     := $$($(1)_include_usr)
         else
-            $(1)_Include     := $$($(1)_include_usr_name)
+            ifneq ($$(wildcard $$($(1)_include_usr_name)/$(2)),)
+                $(1)_Include     := $$($(1)_include_usr_name)
+            else
+                $$(error Couldn't find header $(2) in either $$($(1)_include_home), $$($(1)_include_home_name), $$($(1)_include_usr) or $$($(1)_include_usr_name)! Get it at $(3))
+            endif
         endif
     endif
 endif
@@ -156,7 +160,11 @@ else
         ifneq ($$(wildcard $$($(1)_lib_usr)/lib$(1).so),)
             $(1)_LibDir:= $$($(1)_lib_usr)
         else
-            $(1)_LibDir:= $$($(1)_lib_usr_name)
+            ifneq ($$(wildcard $$($(1)_lib_usr_name)/lib$(1).so),)
+                $(1)_LibDir:= $$($(1)_lib_usr_name)
+            else
+                $$(error Couldn't find library lib$(1).so in either $$($(1)_lib_home), $$($(1)_lib_home_name), $$($(1)_lib_usr) or $$($(1)_lib_usr_name)! Get it at $(3))
+            endif
         endif
     endif
 endif
