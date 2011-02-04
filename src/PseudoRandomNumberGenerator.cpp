@@ -42,6 +42,74 @@ PRNG::~PRNG()
 }
 
 // **************************************************************
+void PRNG::Initialize_Taking_Time_As_Seed(const bool quiet)
+{
+    // Get high precision time
+    timeval tv;
+    gettimeofday(&tv, 0);
+    // typeof(tv.tv_sec)  = time_t (8 bytes unsigned integer)
+    // typeof(tv.tv_suec) = suseconds_t (8 bytes unsigned integer)
+    // typeof(getpid())   = pid_t (4 bytes unsigned integer)
+    uint64_t seconds_since_epoch        = uint64_t(tv.tv_sec);
+    uint64_t microseconds_since_seconds = uint64_t(tv.tv_usec);
+    uint64_t pid                        = uint64_t(getpid());
+
+    // Set epoch to 2000 instead of 1970. Should give a bigger seed range
+    const uint64_t new_epoch_2000                   = uint64_t(60)*uint64_t(60)
+                                                        *uint64_t(24)*uint64_t(365)
+                                                        *uint64_t(30); // ~30 years
+    const uint64_t seconds_since_new_epoch          = seconds_since_epoch - new_epoch_2000;
+
+    // Get number of microseconds since the new epoch
+    const uint64_t microseconds_since_new_epoch = (uint64_t(1e6) * seconds_since_new_epoch)
+                                                    + microseconds_since_seconds;
+
+    // Multiply by pid to get the seed
+    const uint32_t MAX_uint32_t = ~uint32_t(0);
+    uint32_t random_number_seed = uint32_t((pid * microseconds_since_new_epoch) % uint64_t(MAX_uint32_t));
+
+    Initialize(random_number_seed);
+}
+
+// **************************************************************
+void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
+{
+#ifdef RAND_DSFMT
+    dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t), "PRNG::Initialize()");
+#endif // #ifdef RAND_DSFMT
+
+    seed           = new_seed;
+    is_initialized = PRNG_is_initialized;
+    nb_calls       = 0;
+#ifdef RAND_DSFMT
+    if (!quiet)
+    {
+        std_cout
+            << "Using SIMD-oriented Fast Mersenne Twister (SFMT)\n"
+            << "pseudo-random number generator (PRNG)\n"
+            << "See http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/#dSFMT\n";
+    }
+
+    dsfmt_init_gen_rand((dsfmt_t *) dsfmt_data, new_seed);
+#else  // #ifdef RAND_DSFMT
+
+    std_cout
+        << "###################################################################\n"
+        << "WARNING!!!! Using plain (crappy) C/C++ rand() function!!!\n"
+        << "Please recompile with -DRAND_DSFMT (see Makefile) for a better\n"
+        << "pseudo-random number generator.\n"
+        << "Enter to continue, Ctrl+C to cancel\n";
+
+    getchar();
+    srand(seed);
+#endif // #ifdef RAND_DSFMT
+    if (!quiet)
+    {
+        std_cout << "Library's PRNG's seed: " << seed << std::endl;
+    }
+}
+
+// **************************************************************
 double PRNG::Get_Random()
 /**
  * Return a pseudo-random number in the interval ]0,1]
@@ -229,74 +297,6 @@ double PRNG::Get_Random_Box_Muller_Polar(const double mean, const double std_dev
         // We have an extra deviate handy, so unset the ﬂag and return it.
         available = false;
         return gset;
-    }
-}
-
-// **************************************************************
-void PRNG::Initialize_Taking_Time_As_Seed(const bool quiet)
-{
-    // Get high precision time
-    timeval tv;
-    gettimeofday(&tv, 0);
-    // typeof(tv.tv_sec)  = time_t (8 bytes unsigned integer)
-    // typeof(tv.tv_suec) = suseconds_t (8 bytes unsigned integer)
-    // typeof(getpid())   = pid_t (4 bytes unsigned integer)
-    uint64_t seconds_since_epoch        = uint64_t(tv.tv_sec);
-    uint64_t microseconds_since_seconds = uint64_t(tv.tv_usec);
-    uint64_t pid                        = uint64_t(getpid());
-
-    // Set epoch to 2000 instead of 1970. Should give a bigger seed range
-    const uint64_t new_epoch_2000                   = uint64_t(60)*uint64_t(60)
-                                                        *uint64_t(24)*uint64_t(365)
-                                                        *uint64_t(30); // ~30 years
-    const uint64_t seconds_since_new_epoch          = seconds_since_epoch - new_epoch_2000;
-
-    // Get number of microseconds since the new epoch
-    const uint64_t microseconds_since_new_epoch = (uint64_t(1e6) * seconds_since_new_epoch)
-                                                    + microseconds_since_seconds;
-
-    // Multiply by pid to get the seed
-    const uint32_t MAX_uint32_t = ~uint32_t(0);
-    uint32_t random_number_seed = uint32_t((pid * microseconds_since_new_epoch) % uint64_t(MAX_uint32_t));
-
-    Initialize(random_number_seed);
-}
-
-// **************************************************************
-void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
-{
-#ifdef RAND_DSFMT
-    dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t), "PRNG::Initialize()");
-#endif // #ifdef RAND_DSFMT
-
-    seed           = new_seed;
-    is_initialized = PRNG_is_initialized;
-    nb_calls       = 0;
-#ifdef RAND_DSFMT
-    if (!quiet)
-    {
-        std_cout
-            << "Using SIMD-oriented Fast Mersenne Twister (SFMT)\n"
-            << "pseudo-random number generator (PRNG)\n"
-            << "See http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/#dSFMT\n";
-    }
-
-    dsfmt_init_gen_rand((dsfmt_t *) dsfmt_data, new_seed);
-#else  // #ifdef RAND_DSFMT
-
-    std_cout
-        << "###################################################################\n"
-        << "WARNING!!!! Using plain (crappy) C/C++ rand() function!!!\n"
-        << "Please recompile with -DRAND_DSFMT (see Makefile) for a better\n"
-        << "pseudo-random number generator.\n"
-        << "Enter to continue, Ctrl+C to cancel\n";
-
-    getchar();
-    srand(seed);
-#endif // #ifdef RAND_DSFMT
-    if (!quiet)
-    {
-        std_cout << "Library's PRNG's seed: " << seed << std::endl;
     }
 }
 

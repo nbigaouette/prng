@@ -11,10 +11,7 @@ class PRNG
     int is_initialized;
     int nb_calls;
 
-#ifdef RAND_DSFMT
     void *dsfmt_data;
-#endif // #ifdef RAND_DSFMT
-
     uint32_t seed;
 
     public:
