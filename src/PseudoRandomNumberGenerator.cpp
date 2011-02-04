@@ -76,7 +76,6 @@ void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
 {
 #ifdef RAND_DSFMT
     dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t), "PRNG::Initialize()");
-    std_cout << "PRNG::Initialize()   calloc_and_check()\n";
 #endif // #ifdef RAND_DSFMT
 
     seed           = new_seed;
