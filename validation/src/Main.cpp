@@ -44,6 +44,11 @@ void generate_input_file()
 
     std::ofstream file;
     file.open(output_filename);
+    if (!file.is_open())
+    {
+        std::cout << "Couldn't open file " << output_filename << ". Aborting.\n" << std::flush;
+        abort();
+    }
 
     std::cout << "\n" << std::flush;
     for (unsigned int i = 0 ; i < N ; i++)
