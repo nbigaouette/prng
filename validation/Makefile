@@ -30,9 +30,9 @@ include makefiles/Makefile.rules
 CFLAGS          +=
 LDFLAGS         +=
 
-$(eval $(call Flags_template,stdcout,StdCout.hpp))
-$(eval $(call Flags_template,memory,Memory.hpp))
-$(eval $(call Flags_template,prng,PseudoRandomNumberGenerator.hpp))
+$(eval $(call Flags_template,stdcout,StdCout.hpp,ssh://optimusprime.selfip.net/git/nicolas/stdcout.git))
+$(eval $(call Flags_template,memory,Memory.hpp,ssh://optimusprime.selfip.net/git/nicolas/memory.git))
+$(eval $(call Flags_template,prng,PseudoRandomNumberGenerator.hpp,ssh://optimusprime.selfip.net/git/nicolas/prng.git))
 
 CFLAGS          := $(sort $(CFLAGS) )
 LDFLAGS         := $(sort $(LDFLAGS) )
