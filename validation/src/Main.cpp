@@ -11,7 +11,7 @@
 #include <PseudoRandomNumberGenerator.hpp>
 #include <Memory.hpp>
 
-const unsigned int N = 10;
+const unsigned int N = 100000;
 const uint32_t seed  = 0;
 
 void generate_input_file();
