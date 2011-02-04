@@ -343,7 +343,7 @@ distclean: clean_bin clean_obj clean_data clean_doc
 .PHONY: r run
 r: run
 run: $(BIN)
-	$(SOFTLIMIT) ./$(BIN) $(NAME_ARGUMENT) $(INPUT_ARGUMENT) 2>&1 | tee output/make_run.log
+	./$(BIN) $(NAME_ARGUMENT) $(INPUT_ARGUMENT) 2>&1 | tee output/make_run.log
 
 # Run the parallel program
 .PHONY: p rp pr
