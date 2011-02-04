@@ -37,8 +37,6 @@ void generate_input_file()
     PRNG prng;
     prng.Initialize(seed, false); // quiet = false
 
-//     prng.Call_N_Time_Get_Random(10000);
-
     char output_filename[1000];
     sprintf(output_filename, "output/N%u.txt", N);
 
@@ -53,10 +51,7 @@ void generate_input_file()
     std::cout << "\n" << std::flush;
     for (unsigned int i = 0 ; i < N ; i++)
     {
-//         //std::cout << "\r        \r" <<
-        std::cout << "i = " << i << "\n" << std::flush;
-        //file << prng.Get_Random() << "\n" << std::flush;
-        std::cout << "  " << prng.Get_Random() << "\n" << std::flush;
+        file << prng.Get_Random() << "\n" << std::flush;
     }
 
     file.close();
