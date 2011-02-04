@@ -8,6 +8,10 @@
 #include <stdint.h> // (u)int64_t
 #include <cmath>
 
+#ifdef PARALLEL_OMP
+#include <omp.h>
+#endif // #ifdef PARALLEL_OMP
+
 #include <PseudoRandomNumberGenerator.hpp>
 #include <Memory.hpp>
 
@@ -20,8 +24,33 @@ void compare_previously_generated_file();
 // **************************************************************
 int main(int argc, char *argv[])
 {
+#ifdef PARALLEL_OMP
+    std_cout << "Compiled with OpenMP\n";
+    omp_set_num_threads(12);
+    #pragma omp parallel
+    {
+        if (omp_get_thread_num() == 0)
+        {
+            std_cout << "Number of threads: " << omp_get_num_threads() << "\n";
+        }
+        fflush(stdout);
+        for (int thread = 0 ; thread < omp_get_num_threads() ; thread++)
+        {
+            if (omp_get_thread_num() == thread)
+            {
+                std_cout << "    Thread id " << thread << "\n";
+                fflush(stdout);
+            }
+            #pragma omp barrier
+        }
+    }
+#endif // #ifdef PARALLEL_OMP
 
     generate_input_file();
+
+#ifdef PARALLEL_OMP
+    #pragma omp parallel
+#endif // #ifdef PARALLEL_OMP
     compare_previously_generated_file();
 
     return EXIT_SUCCESS;
