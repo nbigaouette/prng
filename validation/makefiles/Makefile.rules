@@ -170,7 +170,10 @@ else
 endif
 
 CFLAGS          += -I$$($(1)_Include)
-LDFLAGS         += -L$$($(1)_LibDir) -l$(1) $(RPATH)$$($(1)_LibDir)
+LDFLAGS         += -L$$($(1)_LibDir) -l$(1)
+ifneq ($(RPATH),)
+LDFLAGS         += $(RPATH)$$($(1)_LibDir)
+endif
 
 endef
 
