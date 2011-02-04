@@ -119,6 +119,10 @@ INCLUDES         = $(addprefix -I./, $(SRCDIRS) )
 LDFLAGS         += -L./$(build_dir)
 
 #################################################################
+# This is a "template", acting like a function.
+# It will add to the CFLAGS and LDFLAGS the right path to a library.
+# To use, include a similar line in the main Makefile:
+# $(eval $(call Flags_template,stdcout,StdCout.hpp))
 define Flags_template
 $(1)_include_home      := $(HOME)/usr/include
 $(1)_include_home_name := $(HOME)/usr/include/$(1)
