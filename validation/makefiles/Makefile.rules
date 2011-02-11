@@ -124,10 +124,12 @@ LDFLAGS         += -L./$(build_dir)
 # To use, include a similar line in the main Makefile:
 # $(eval $(call CFLAGS_template,stdcout,StdCout.hpp),ssh://optimusprime.selfip.net/git/nicolas/stdcout.git)
 define CFLAGS_template
-    $(1)_include_home      := $(HOME)/usr/include
-    $(1)_include_home_name := $(HOME)/usr/include/$(1)
-    $(1)_include_usr       := /usr/include
-    $(1)_include_usr_name  := /usr/include/$(1)
+    usr_lib                := $(subst /gcc,,/usr/lib/$(DESTDIRCOMPILER))
+
+    $(1)_lib_home          := $(HOME)$$(usr_lib)
+    $(1)_lib_home_name     := $(HOME)$$(usr_lib)/$(1)
+    $(1)_lib_usr           := $$(usr_lib)
+    $(1)_lib_usr_name      := $$(usr_lib)/$(1)
 
     ifneq ($$(wildcard $$($(1)_include_home)/$(2)),)
         $(1)_Include := $$($(1)_include_home)
