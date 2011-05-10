@@ -19,8 +19,12 @@ endif
 CFLAGS          += -pedantic
 CFLAGS          += -Wall -Wextra
 CFLAGS          += -Wformat=2 -Wno-format-extra-args -Wformat-security -Wformat-nonliteral
-CFLAGS          += -Wuninitialized -Winit-self
-CFLAGS          += -Wmissing-include-dirs -Wfloat-equal -Wshadow -Wunsafe-loop-optimizations -Wconversion -Wlogical-op -Winline
+# CFLAGS          += -Wuninitialized
+CFLAGS          += -Winit-self
+CFLAGS          += -Wmissing-include-dirs -Wfloat-equal -Wshadow -Wunsafe-loop-optimizations -Wconversion -Winline
+ifneq ($(os), Darwin)
+CFLAGS          += -Wlogical-op
+endif
 # CFLAGS          += -Wpadded
 # CFLAGS          += -Wunreachable-code
 # CFLAGS          += -Weffc++
@@ -46,13 +50,16 @@ GCC_REV         := $(shell gcc -dumpversion | cut -d'.' -f3)
 #################################################################
 # Call "make optimized" for optimized compilation
 ifneq ($(filter optimized, $(MAKECMDGOALS) ),)
-    CFLAGS      := -O3 -Wno-write-strings -march=native -fvisibility-inlines-hidden -DNDEBUG
+    CFLAGS      := -O3 -Wno-write-strings -fvisibility-inlines-hidden -DNDEBUG
     CFLAGS      += -ftree-vectorizer-verbose=1
     # Link-time optimization. Needs GCC v4.5.1 and up
     GCC_GT_451  := $(shell [ $(GCC_MAJOR) -gt 4 -o \( $(GCC_MAJOR) -eq 4 -a $(GCC_MINOR) -ge 5 -a $(GCC_REV) -ge 1 \) ] && echo true )
     ifeq ($(GCC_GT_451),true)
         CFLAGS  += -flto
         LDFLAGS += -flto
+    endif
+    ifneq ($(os), Darwin)
+        CFLAGS  += -march=native
     endif
 endif
 #################################################################
@@ -81,11 +88,6 @@ ifeq ($(arch),sun4u)
     CFLAGS      += -fPIC
     LDFLAGS     += -fPIC
 endif
-
-#################################################################
-# Flags to build a shared object (library) should be the same
-# as CFLAGS plus -shared
-LIB_OPTIONS     := -shared $(CFLAGS)
 
 # Detect if compilation for library
 ifneq ($(LIB),)

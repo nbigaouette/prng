@@ -6,7 +6,7 @@ CC              := cc
 CPP             := CC
 CFLAGS          := -O0 -g -DYDEBUG
 
-RPATH           := -R
+RPATH           :=
 LibMath         := -lm
 LDFLAGS         :=
 OMP_CFLAGS      := -mp
@@ -63,6 +63,8 @@ endif
 
 
 
+CFLAGS          += -no-gcc
+
 #################################################################
 # Call "make omp" for OpenMP compilation
 ifneq ($(filter omp, $(MAKECMDGOALS) ),)
@@ -86,11 +88,6 @@ ifeq ($(arch),x86_64)
     CFLAGS      += -fPIC
     LDFLAGS     += -fPIC
 endif
-
-#################################################################
-# Flags to build a shared object (library) should be the same
-# as CFLAGS plus -shared
-LIB_OPTIONS     := -shared $(CFLAGS)
 
 # Detect if compilation for library
 sharcnet: $(BIN)

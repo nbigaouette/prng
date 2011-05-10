@@ -28,11 +28,6 @@ CFLAGS          += -Wno-unknown-pragmas
 OMP_CFLAGS       = -fopenmp
 OMP_LDFLAGS      = -fopenmp
 
-# http://llvm.org/bugs/show_bug.cgi?id=7069
-GCC_MAJOR       := $(shell gcc -dumpversion | cut -d'.' -f1)
-GCC_MINOR       := $(shell gcc -dumpversion | cut -d'.' -f2)
-GCC_REV         := $(shell gcc -dumpversion | cut -d'.' -f3)
-
 #################################################################
 # Call "make optimized" for optimized compilation
 ifneq ($(filter optimized, $(MAKECMDGOALS) ),)
@@ -58,15 +53,13 @@ ifeq ($(arch),sun4u)
     LDFLAGS     += -fPIC
 endif
 
-#################################################################
-# Flags to build a shared object (library) should be the same
-# as CFLAGS plus -shared
-LIB_OPTIONS     := -shared $(CFLAGS)
-
 CFLAGS          += -DCLANG
 
-GCC_GE_45       := $(shell [ $(GCC_MAJOR) -gt 4 -o \( $(GCC_MAJOR) -eq 4 -a $(GCC_MINOR) -ge 5 \) ] && echo true )
-ifeq ($(GCC_GE_45),true)
+# http://llvm.org/bugs/show_bug.cgi?id=7069
+GCC_MAJOR       := $(shell gcc -dumpversion | cut -d'.' -f1)
+GCC_MINOR       := $(shell gcc -dumpversion | cut -d'.' -f2)
+GCC_REV         := $(shell gcc -dumpversion | cut -d'.' -f3)
+ifeq ($(GCC_MAJOR).$(GCC_MINOR),4.5)
 GCC34_LOC       := /opt/gcc34
 CFLAGS          += -nostdinc++ -I$(GCC34_LOC)/include/c++/3.4.6 -I$(GCC34_LOC)/include/c++/3.4.6/x86_64-unknown-linux-gnu
 endif

@@ -98,11 +98,6 @@ ifeq ($(arch),sun4u)
     LDFLAGS     += -xcode=pic32
 endif
 
-#################################################################
-# Flags to build a shared object (library) should be the same
-# as CFLAGS plus -G
-LIB_OPTIONS     := -G $(CFLAGS)
-
 # Detect if compilation for library
 ifneq ($(LIB),)
 sun: force

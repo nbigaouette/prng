@@ -30,6 +30,8 @@ include makefiles/Makefile.rules
 CFLAGS          +=
 LDFLAGS         +=
 
+LINK_PREFERED=shared
+
 $(eval $(call Flags_template,stdcout,StdCout.hpp,ssh://optimusprime.selfip.net/git/nicolas/stdcout.git))
 $(eval $(call Flags_template,memory,Memory.hpp,ssh://optimusprime.selfip.net/git/nicolas/memory.git))
 $(eval $(call Flags_template,prng,PseudoRandomNumberGenerator.hpp,ssh://optimusprime.selfip.net/git/nicolas/prng.git))
