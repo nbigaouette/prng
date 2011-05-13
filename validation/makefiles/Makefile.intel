@@ -57,6 +57,12 @@ ifeq ($(GCC_MAJOR).$(GCC_MINOR),4.5)
 GCC34_LOC       := /opt/gcc34
 CFLAGS += -gcc-name=$(GCC34_LOC)/bin/gcc
 CFLAGS += -gxx-name=$(GCC34_LOC)/bin/g++
+else
+ifeq ($(GCC_MAJOR).$(GCC_MINOR),4.6)
+GCC34_LOC       := /opt/gcc34
+CFLAGS += -gcc-name=$(GCC34_LOC)/bin/gcc
+CFLAGS += -gxx-name=$(GCC34_LOC)/bin/g++
+endif
 endif
 
 # Detect if compilation for library
