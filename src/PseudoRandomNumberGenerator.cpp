@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cmath>
 #include <sys/time.h> // gettimeofday()
+#include <cstring> // memset()
 
 #include <StdCout.hpp>
 #include <Memory.hpp>
@@ -35,8 +36,7 @@ PRNG::PRNG()
 PRNG::~PRNG()
 {
 #ifdef RAND_DSFMT
-    dsfmt_t *tmp_pointer = (dsfmt_t *) dsfmt_data;
-    free_me(tmp_pointer, 1);
+    delete dsfmt_data;
     dsfmt_data = NULL;
 #endif // #ifdef RAND_DSFMT
 }
@@ -75,7 +75,8 @@ void PRNG::Initialize_Taking_Time_As_Seed(const bool quiet)
 void PRNG::Initialize(const uint32_t new_seed, const bool quiet)
 {
 #ifdef RAND_DSFMT
-    dsfmt_data = calloc_and_check(1, sizeof(dsfmt_t), "PRNG::Initialize()");
+    dsfmt_data = new dsfmt_t;
+    memset(dsfmt_data, 0, sizeof(dsfmt_t));
 #endif // #ifdef RAND_DSFMT
 
     seed           = new_seed;
