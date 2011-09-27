@@ -46,5 +46,6 @@ CFLAGS      += -DDSFMT_MEXP=19937
 include makefiles/Makefile.library
 
 $(eval $(call Flags_template,stdcout,StdCout.hpp,ssh://optimusprime.selfip.net/git/nicolas/stdcout.git))
+$(eval $(call Flags_template,memory,Memory.hpp,ssh://optimusprime.selfip.net/git/nicolas/memory.git))
 
 ############ End of file ########################################
