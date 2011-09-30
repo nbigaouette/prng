@@ -36,7 +36,7 @@ PRNG::PRNG()
 PRNG::~PRNG()
 {
 #ifdef RAND_DSFMT
-    delete dsfmt_data;
+    delete ((dsfmt_t *) dsfmt_data);
     dsfmt_data = NULL;
 #endif // #ifdef RAND_DSFMT
 }
