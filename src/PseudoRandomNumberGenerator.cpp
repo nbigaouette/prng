@@ -304,6 +304,7 @@ double PRNG::Get_Random_Box_Muller_Polar(const double mean, const double std_dev
 // **************************************************************
 double PRNG::Call_N_Time_Get_Random(const int n)
 {
+    std_cout << "PRNG Calling N=" << n << " times Get_Random()...\n" << std::flush;
     volatile double last_rand;
     for (int i = 0 ; i < n ; i++)
     {
