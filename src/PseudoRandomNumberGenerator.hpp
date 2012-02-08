@@ -4,6 +4,12 @@
 #include <stdint.h> // (u)int64_t
 #include <cstdlib> // free()
 
+namespace prng
+{
+    // See Git_Info.cpp (generated dynamically from Git_Info.cpp_template & Makefile.rules)
+    void Log_Git_Info(std::string basename = "");
+}
+
 // **************************************************************
 // Pseudo-Random Number Generator's (PRNG)
 class PRNG
