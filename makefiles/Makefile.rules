@@ -326,7 +326,7 @@ TEST_NAMES       = $(notdir $(subst .$(SRCEXT),,$(TEST_SOURCES) ) )
 TEST_OBJ         = $(addprefix $(build_dir)/,$(addsuffix .o, $(TEST_NAMES) ) )
 TEST_BIN         = $(BIN)_testing
 TEST_CFLAGS      =
-TEST_LDFLAGS     = -lboost_unit_test_framework
+TEST_LDFLAGS     = -lboost_unit_test_framework -lz
 
 ifneq ($(filter test, $(MAKECMDGOALS) ),)
 # Redefine the old binary target as being "empty"
