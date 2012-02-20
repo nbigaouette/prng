@@ -28,7 +28,7 @@ include makefiles/Makefile.rules
 #################################################################
 # Project specific options
 CFLAGS          +=
-LDFLAGS         +=
+LDFLAGS         += -lboost_unit_test_framework -lz
 
 LINK_PREFERED=shared
 
