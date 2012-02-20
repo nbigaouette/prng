@@ -1,5 +1,5 @@
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE MDTesting
+#define BOOST_TEST_MODULE PRNGTesting
 #include <boost/test/unit_test.hpp>
 
 /**
