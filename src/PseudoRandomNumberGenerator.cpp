@@ -68,7 +68,7 @@ void PRNG::Initialize_Taking_Time_As_Seed(const bool quiet)
     const uint32_t MAX_uint32_t = ~uint32_t(0);
     uint32_t random_number_seed = uint32_t((pid * microseconds_since_new_epoch) % uint64_t(MAX_uint32_t));
 
-    Initialize(random_number_seed);
+    Initialize(random_number_seed, quiet);
 }
 
 // **************************************************************
