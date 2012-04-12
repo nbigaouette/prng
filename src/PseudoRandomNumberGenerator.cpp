@@ -5,6 +5,7 @@
 #include <cmath>
 #include <sys/time.h> // gettimeofday()
 #include <cstring> // memset()
+#include <unistd.h> // getpid()
 
 #include <StdCout.hpp>
 #include <Memory.hpp>
