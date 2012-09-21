@@ -244,6 +244,14 @@ void PRNG::Get_Random_Direction(double xyz[3])
 }
 
 // **************************************************************
+std::vector<double> PRNG::Get_Random_Direction()
+{
+    double random_direction[3];
+    Get_Random_Direction(random_direction);
+    return std::vector<double>(random_direction, random_direction+3);
+}
+
+// **************************************************************
 double PRNG::gasdev()
 /**
  * Returns a normally distributed deviate with zero mean and unit variance.

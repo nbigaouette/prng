@@ -3,6 +3,7 @@
 
 #include <stdint.h> // (u)int64_t
 #include <cstdlib> // free()
+#include <vector>
 
 namespace prng
 {
@@ -33,6 +34,7 @@ class PRNG
         double      Get_Random_Close0_Close1();     // [0,1]
         double      Get_Random_CloseN1_Close1();    // [-1,1]
         void        Get_Random_Direction(double xyz[3]);
+        std::vector<double> Get_Random_Direction();
         double      gasdev();
         double      Get_Random_Box_Muller_Polar(const double mean = 0.0, const double std_dev = 1.0);
         double      Call_N_Time_Get_Random(const int n);
